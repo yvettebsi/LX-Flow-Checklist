@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LX Flow Publishing Checklist</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f0;color:#1a1a18;min-height:100vh}
+.page{max-width:680px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.page-title{font-size:20px;font-weight:600;color:#1a1a18;margin-bottom:4px}
+.page-sub{font-size:13px;color:#888780;margin-bottom:1rem}
+.ref-banner{background:#fff;border:0.5px solid #d3d1c7;border-left:3px solid #534AB7;border-radius:8px;padding:10px 14px;margin-bottom:1.25rem;font-size:13px;color:#3C3489;line-height:1.5}
+.ref-banner strong{font-weight:600}
+.picker{display:flex;gap:10px;margin-bottom:1.25rem}
+.phase-card{flex:1;border:0.5px solid #d3d1c7;border-radius:12px;padding:0.875rem 0.75rem;cursor:pointer;background:#fff;text-align:center;transition:background 0.15s,border-color 0.15s}
+.phase-card:hover{background:#f1efe8}
+.phase-card.active.p0{border:1.5px solid #185FA5;background:#E6F1FB}
+.phase-card.active.p1{border:1.5px solid #3B6D11;background:#EAF3DE}
+.phase-card.active.p2{border:1.5px solid #854F0B;background:#FAEEDA}
+.card-num{font-size:20px;font-weight:600}
+.card-label{font-size:11px;margin-top:2px}
+.phase-card.active.p0 .card-num,.phase-card.active.p0 .card-label{color:#185FA5}
+.phase-card.active.p1 .card-num,.phase-card.active.p1 .card-label{color:#3B6D11}
+.phase-card.active.p2 .card-num,.phase-card.active.p2 .card-label{color:#854F0B}
+.phase-card:not(.active) .card-num,.phase-card:not(.active) .card-label{color:#888780}
+.checklist{border:0.5px solid #d3d1c7;border-radius:12px;overflow:hidden;background:#fff}
+.checklist-header{padding:0.875rem 1rem;display:flex;align-items:center;gap:10px}
+.checklist-header.p0{background:#E6F1FB}
+.checklist-header.p1{background:#EAF3DE}
+.checklist-header.p2{background:#FAEEDA}
+.header-title{font-size:15px;font-weight:600;flex:1}
+.p0 .header-title{color:#0C447C}
+.p1 .header-title{color:#27500A}
+.p2 .header-title{color:#633806}
+.header-pct{font-size:13px;font-weight:500;white-space:nowrap}
+.p0 .header-pct{color:#185FA5}
+.p1 .header-pct{color:#3B6D11}
+.p2 .header-pct{color:#854F0B}
+.pbar-wrap{height:3px;background:#f1efe8}
+.pbar{height:3px;transition:width 0.3s}
+.p0 .pbar{background:#185FA5}
+.p1 .pbar{background:#3B6D11}
+.p2 .pbar{background:#854F0B}
+.section-label{font-size:11px;font-weight:600;color:#888780;text-transform:uppercase;letter-spacing:0.06em;padding:10px 1rem 4px;background:#f5f4f0}
+.info-row{padding:8px 1rem;background:#EEEDFE;border-top:0.5px solid #CECBF6;display:flex;align-items:flex-start;gap:8px}
+.info-text{font-size:12px;color:#3C3489;line-height:1.6}
+.check-row{display:flex;align-items:flex-start;gap:10px;padding:9px 1rem;border-top:0.5px solid #e8e6e0;background:#fff;cursor:pointer;transition:background 0.1s}
+.check-row:hover{background:#f5f4f0}
+.check-row.done .check-label{color:#b4b2a9;text-decoration:line-through}
+.check-box{width:17px;height:17px;border-radius:3px;border:0.5px solid #b4b2a9;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:11px;transition:background 0.15s}
+.p0 .check-box.ticked{background:#E6F1FB;border-color:#185FA5;color:#185FA5}
+.p1 .check-box.ticked{background:#EAF3DE;border-color:#3B6D11;color:#3B6D11}
+.p2 .check-box.ticked{background:#FAEEDA;border-color:#854F0B;color:#854F0B}
+.check-label{font-size:13px;color:#1a1a18;line-height:1.5;flex:1;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.check-row.done .check-label{color:#b4b2a9}
+.pill-link{font-size:11px;color:#185FA5;text-decoration:none;border:0.5px solid #B5D4F4;border-radius:4px;padding:1px 7px;white-space:nowrap;background:#fff;flex-shrink:0}
+.pill-link:hover{background:#E6F1FB}
+.alert-row{padding:10px 14px;background:#FCEBEB;border-top:0.5px solid #F09595;border-left:3px solid #A32D2D;display:flex;align-items:flex-start;gap:8px}
+.alert-text{font-size:12px;color:#791F1F;line-height:1.5;font-weight:600}
+.warn-row{padding:10px 1rem;background:#fff8eb;border-top:0.5px solid #FAC775;display:flex;align-items:flex-start;gap:8px}
+.warn-text{font-size:12px;color:#633806;line-height:1.5}
+.complete-banner{padding:10px 1rem;background:#EAF3DE;border-top:0.5px solid #C0DD97;text-align:center;font-size:13px;color:#27500A;font-weight:600}
+.reset-btn{font-size:12px;color:#5F5E5A;border:1.5px solid #b4b2a9;background:#ffffff;border-radius:999px;padding:5px 14px;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background 0.15s,border-color 0.15s}
+.reset-btn:hover{background:#f1efe8;border-color:#5F5E5A}
+.reset-btn:active{background:#e8e6e0;transform:scale(0.97)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-title">LX Flow Publishing Checklist</div>
+  <div class="page-sub">Use this checklist when publishing a new or updated Flow in BrainStorm.</div>
+  <div class="ref-banner"><strong>Reference:</strong> Please refer to the <strong>Flow Design Notes in Loop</strong> for all stages before getting started.</div>
+  <div class="picker" id="picker"></div>
+  <div id="checklist-view"></div>
+</div>
+<script>
+var PHASES=[
+{label:"Skeleton build",short:"Skeleton",sections:[
+  {label:"How to use this checklist",info:"1. Feel free to delete any line items that aren't applicable to your flow. For example, if there are no assessments, you can remove that section or make a note about it.\n\n2. If you are redesigning an existing flow, you only need to complete the Survey Creation, Assessment Creation, Assets in LEMN (skip the first two items), and Before Handing Off sections."},
+  {label:"Survey creation",items:[
+    {t:"Sanity check all surveys in Loop"},
+    {t:"Proofread all surveys in Loop for grammatical correctness"},
+    {t:"Add all surveys in BrainStorm and confirm they are in the correct pack"}
+  ]},
+  {label:"Assessment creation",items:[
+    {t:"Sanity check all assessments in Loop"},
+    {t:"Proofread all assessments in Loop for grammatical correctness"},
+    {t:"Add all assessments in BrainStorm and confirm they are in the correct pack"},
+    {t:"Mark all assessment questions as correct or incorrect, and designate whether all correct answers must be chosen for multiple select questions"}
+  ]},
+  {label:"Assets in LEMN",items:[
+    {t:"Create a LEMN form for the flow itself, and add the link to BrainStorm platform in LEMN forms"},
+    {t:"Add the link to flow LEMN form at the beginning of the Loop Flow Design Notes"},
+    {t:"Create a LEMN form for all assets you have created, and add links to BrainStorm platform in LEMN forms"},
+    {t:"Add the link to each LEMN form in the Loop Design Notes next to the assets you created"},
+    {t:"Add the link to each asset in BSP admin in the Loop Design Notes next to the assets you created"},
+    {t:"Update all assets' statuses to reflect their current production stage in Design Notes"}
+  ]},
+  {label:"BrainStorm Admin Portal",info:"The following sections (Configuration, Settings, Content, and Goal tabs) are all completed in the BrainStorm Admin Portal."},
+  {label:"Configuration tab",items:[
+    {t:"Add and format the title correctly",link:{text:"Flow Style Guide",url:"https://loop.cloud.microsoft/p/eyJ3Ijp7InUiOiJodHRwczovL2JzaW9ubGluZS5zaGFyZXBvaW50LmNvbS8%2FbmF2PWN6MGxNa1ltWkQxaUlUbG1NRUo1Y0U1V1ZXdGhOMkpEY2xkVk1HWnBWMDE2WTBKdlRHMXlMVTVNYTNoR2JFWkRlRFZzU25kYVJ6WnlSbFZ2VUhCUlN6Sk5RVGg0UVdkS2FFWW1aajB3TVZWTFRrSXpVVUpHVkV4UVVVbEJWek5FVGtReVdqWlNOMU5GVFVsSFJrZFJKbU05Sm1ac2RXbGtQVEUlM0QiLCJyIjpmYWxzZX0sInAiOnsidSI6Imh0dHBzOi8vYnNpb25saW5lLnNoYXJlcG9pbnQuY29tLzpmbDovci9jb250ZW50c3RvcmFnZS9DU1BfY2EwMWZkZjUtNTU5My00NjUyLWJiNmMtMmFkNjUzNDdlMjU4L0RvY3VtZW50JTIwTGlicmFyeS9Mb29wQXBwRGF0YS9GbG93JTIwU3R5bGUlMjBHdWlkZS5sb29wP2Q9dzUzZDZmNzMyMDRjMDQ4NWI4ZDNhYzY5ODU1YzFmY2MwJmNzZj0xJndlYj0xJmU9aTBUYXBTJm5hdj1jejBsTWtaamIyNTBaVzUwYzNSdmNtRm5aU1V5UmtOVFVGOWpZVEF4Wm1SbU5TMDFOVGt6TFRRMk5USXRZbUkyWXkweVlXUTJOVE0wTjJVeU5UZ21aRDFpSVRsbU1FSjVjRTVXVld0aE4ySkRjbGRWTUdacFYwMTZZMEp2VEcxeUxVNU1hM2hHYkVaRGVEVnNTbmRhUnpaeVJsVnZVSEJSU3pKTlFUaDRRV2RLYUVZbVpqMHdNVlZMVGtJelVVSlROamRNUmtoUlFVVk1Ua1ZKTWs5WFIxUkNTelJFTjBkQkptTTlKVEpHSm1ac2RXbGtQVEVtWVQxTWIyOXdRWEJ3Sm5BOUpUUXdabXgxYVdSNEpUSkdiRzl2Y0Mxd1lXZGxMV052Ym5SaGFXNWxjaVo0UFNVM1FpVXlNbmNsTWpJbE0wRWxNakpVTUZKVVZVaDRhV015YkhaaWJYaHdZbTFWZFdNeWFHaGpiVlozWWpKc2RXUkROV3BpTWpFNFdXbEZOVnBxUWtObFdFSlBWbXhXY2xsVVpHbFJNMHBZVmxSQ2JXRldaRTVsYlU1RFlqQjRkR05wTVU5VVIzUTBVbTE0UjFFelp6RmlSWEF6VjJ0ak1tTnJXbFppTVVKM1ZWVnplVlJWUlRSbFJVWnVVMjFvUjJaRVFYaFdWWFJQVVdwT1VsRnJXbFZVUmtKU1UxVkdXRTB3VWs5U1JFcGhUbXhKTTFVd1ZrNVRWV1JIVWpGRkpUTkVKVEl5SlRKREpUSXlhU1V5TWlVelFTVXlNbVpsT0Rsa05HSTFMVE13T0RFdE5ETTROQzFoT1RWbUxUaGxOamMxTm1JeU9HUm1NU1V5TWlVM1JBJTNEJTNEIiwiciI6dHJ1ZX0sImkiOnsiaSI6ImZlODlkNGI1LTMwODEtNDM4NC1hOTVmLThlNjc1NmIyOGRmNSJ9fQ%3D%3D"}},
+    {t:"Add and format the description correctly",link:{text:"Flow Style Guide",url:"https://loop.cloud.microsoft/p/eyJ3Ijp7InUiOiJodHRwczovL2JzaW9ubGluZS5zaGFyZXBvaW50LmNvbS8%2FbmF2PWN6MGxNa1ltWkQxaUlUbG1NRUo1Y0U1V1ZXdGhOMkpEY2xkVk1HWnBWMDE2WTBKdlRHMXlMVTVNYTNoR2JFWkRlRFZzU25kYVJ6WnlSbFZ2VUhCUlN6Sk5RVGg0UVdkS2FFWW1aajB3TVZWTFRrSXpVVUpHVkV4UVVVbEJWek5FVGtReVdqWlNOMU5GVFVsSFJrZFJKbU05Sm1ac2RXbGtQVEUlM0QiLCJyIjpmYWxzZX0sInAiOnsidSI6Imh0dHBzOi8vYnNpb25saW5lLnNoYXJlcG9pbnQuY29tLzpmbDovci9jb250ZW50c3RvcmFnZS9DU1BfY2EwMWZkZjUtNTU5My00NjUyLWJiNmMtMmFkNjUzNDdlMjU4L0RvY3VtZW50JTIwTGlicmFyeS9Mb29wQXBwRGF0YS9GbG93JTIwU3R5bGUlMjBHdWlkZS5sb29wP2Q9dzUzZDZmNzMyMDRjMDQ4NWI4ZDNhYzY5ODU1YzFmY2MwJmNzZj0xJndlYj0xJmU9aTBUYXBTJm5hdj1jejBsTWtaamIyNTBaVzUwYzNSdmNtRm5aU1V5UmtOVFVGOWpZVEF4Wm1SbU5TMDFOVGt6TFRRMk5USXRZbUkyWXkweVlXUTJOVE0wTjJVeU5UZ21aRDFpSVRsbU1FSjVjRTVXVld0aE4ySkRjbGRWTUdacFYwMTZZMEp2VEcxeUxVNU1hM2hHYkVaRGVEVnNTbmRhUnpaeVJsVnZVSEJSU3pKTlFUaDRRV2RLYUVZbVpqMHdNVlZMVGtJelVVSlROamRNUmtoUlFVVk1Ua1ZKTWs5WFIxUkNTelJFTjBkQkptTTlKVEpHSm1ac2RXbGtQVEVtWVQxTWIyOXdRWEJ3Sm5BOUpUUXdabXgxYVdSNEpUSkdiRzl2Y0Mxd1lXZGxMV052Ym5SaGFXNWxjaVo0UFNVM1FpVXlNbmNsTWpJbE0wRWxNakpVTUZKVVZVaDRhV015YkhaaWJYaHdZbTFWZFdNeWFHaGpiVlozWWpKc2RXUkROV3BpTWpFNFdXbEZOVnBxUWtObFdFSlBWbXhXY2xsVVpHbFJNMHBZVmxSQ2JXRldaRTVsYlU1RFlqQjRkR05wTVU5VVIzUTBVbTE0UjFFelp6RmlSWEF6VjJ0ak1tTnJXbFppTVVKM1ZWVnplVlJWUlRSbFJVWnVVMjFvUjJaRVFYaFdWWFJQVVdwT1VsRnJXbFZVUmtKU1UxVkdXRTB3VWs5U1JFcGhUbXhKTTFVd1ZrNVRWV1JIVWpGRkpUTkVKVEl5SlRKREpUSXlhU1V5TWlVelFTVXlNbVpsT0Rsa05HSTFMVE13T0RFdE5ETTROQzFoT1RWbUxUaGxOamMxTm1JeU9HUm1NU1V5TWlVM1JBJTNEJTNEIiwiciI6dHJ1ZX0sImkiOnsiaSI6ImZlODlkNGI1LTMwODEtNDM4NC1hOTVmLThlNjc1NmIyOGRmNSJ9fQ%3D%3D"}},
+    {t:"Add a stock image thumbnail",link:{text:"Flow Thumbnails",url:"https://loop.cloud.microsoft/p/eyJ3Ijp7InUiOiJodHRwczovL2JzaW9ubGluZS5zaGFyZXBvaW50LmNvbS8%2FbmF2PWN6MGxNa1ltWkQxaUlUbG1NRUo1Y0U1V1ZXdGhOMkpEY2xkVk1HWnBWMDE2WTBKdlRHMXlMVTVNYTNoR2JFWkRlRFZzU25kYVJ6WnlSbFZ2VUhCUlN6Sk5RVGg0UVdkS2FFWW1aajB3TVZWTFRrSXpVVUpHVkV4UVVVbEJWek5FVGtReVdqWlNOMU5GVFVsSFJrZFJKbU05Sm1ac2RXbGtQVEUlM0QiLCJyIjpmYWxzZX0sInAiOnsidSI6Imh0dHBzOi8vYnNpb25saW5lLnNoYXJlcG9pbnQuY29tLzpmbDovci9jb250ZW50c3RvcmFnZS9DU1BfY2EwMWZkZjUtNTU5My00NjUyLWJiNmMtMmFkNjUzNDdlMjU4L0RvY3VtZW50JTIwTGlicmFyeS9Mb29wQXBwRGF0YS9GbG93JTIwdGh1bWJuYWlscy5sb29wP2Q9dzFkYzBlYmE1MTQxMjQyMzY4OTFmMDQ1ZGI1Y2RmOTAyJmNzZj0xJndlYj0xJmU9NWxuVDhFJm5hdj1jejBsTWtaamIyNTBaVzUwYzNSdmNtRm5aU1V5UmtOVFVGOWpZVEF4Wm1SbU5TMDFOVGt6TFRRMk5USXRZbUkyWXkweVlXUTJOVE0wTjJVeU5UZ21aRDFpSVRsbU1FSjVjRTVXVld0aE4ySkRjbGRWTUdacFYwMTZZMEp2VEcxeUxVNU1hM2hHYkVaRGVEVnNTbmRhUnpaeVJsVnZVSEJSU3pKTlFUaDRRV2RLYUVZbVpqMHdNVlZMVGtJelVVWkdOVkJCUWpKRlVWVkhXa0pKVTBoWlJVeFhNalF6TmtsREptTTlKVEpHSm1ac2RXbGtQVEVtWVQxTWIyOXdRWEJ3Sm5BOUpUUXdabXgxYVdSNEpUSkdiRzl2Y0Mxd1lXZGxMV052Ym5SaGFXNWxjaVo0UFNVM1FpVXlNbmNsTWpJbE0wRWxNakpVTUZKVVZVaDRhV015YkhaaWJYaHdZbTFWZFdNeWFHaGpiVlozWWpKc2RXUkROV3BpTWpFNFdXbEZOVnBxUWtObFdFSlBWbXhXY2xsVVpHbFJNMHBZVmxSQ2JXRldaRTVsYlU1RFlqQjRkR05wTVU5VVIzUTBVbTE0UjFFelp6RmlSWEF6VjJ0ak1tTnJXbFppTVVKM1ZWVnplVlJWUlRSbFJVWnVVMjFvUjJaRVFYaFdWWFJQVVdwT1VsRnJXbFZVUmtKU1UxVkdXRTB3VWs5U1JFcGhUbXhKTTFVd1ZrNVRWV1JIVWpGRkpUTkVKVEl5SlRKREpUSXlhU1V5TWlVelFTVXlNbVpsT0Rsa05HSTFMVE13T0RFdE5ETTROQzFoT1RWbUxUaGxOamMxTm1JeU9HUmtPQ1V5TWlVM1JBJTNEJTNEIiwiciI6dHJ1ZX0sImkiOnsiaSI6ImZlODlkNGI1LTMwODEtNDM4NC1hOTVmLThlNjc1NmIyOGRkOCJ9fQ%3D%3D"}}
+  ]},
+  {label:"Settings tab",items:[
+    {t:"Add the correct software application(s)"},
+    {t:"Apply the correct labels"}
+  ]},
+  {label:"Content tab",items:[
+    {t:"Add all assets from the design in the proper order"},
+    {t:"Add the correct checkpoint survey"},
+    {t:"Confirm all assets are in the correct pack"}
+  ]},
+  {label:"Goal tab",items:[
+    {t:"Confirm the Flow objective is correct"},
+    {t:"Confirm the Flow type is correct"},
+    {t:"(If applicable) Add success metrics and data source"}
+  ]},
+  {label:"Before handing off",warn:true,items:[
+    {t:"If any issues are found, communicate them with the designer and confirm all issues are resolved before proceeding"},
+    {t:"Notify the owner of the Flow Finalization card that the skeleton is complete"}
+  ]}
+]},
+{label:"Flow finalization",short:"Finalization",sections:[
+  {label:"BrainStorm admin portal",alert:"When adding assets to the Flow, double-check that each asset is the correct one by verifying its Pack — duplicate naming exists and it is easy to add the wrong asset.",items:[
+    {t:"Add all remaining assets according to the Loop Flow Design Notes"},
+    {t:"Update all asset titles in the Loop Design Notes to reflect the current title in LEMN"},
+    {t:"Confirm the flow title is complete"},
+    {t:"Confirm the flow description is complete"},
+    {t:"Confirm the software application metadata is complete"},
+    {t:"Confirm labels are complete"},
+    {t:"Confirm the flow objective is complete"},
+    {t:"Confirm the flow type is complete"},
+    {t:"Confirm success criteria is complete"},
+    {t:"Confirm section names and descriptions are present and correct"},
+    {t:"Confirm the end-of-Flow asset is present"},
+    {t:"Confirm branch logic and connections are correct"},
+    {t:"Confirm all delays have been set to the proper time and trigger",links:[
+      {text:"Trigger Flow",url:"https://loop.cloud.microsoft/p/eyJ3Ijp7InUiOiJodHRwczovL2JzaW9ubGluZS5zaGFyZXBvaW50LmNvbS8%2FbmF2PWN6MGxNa1ltWkQxaUlUbG1NRUo1Y0U1V1ZXdGhOMkpEY2xkVk1HWnBWMDE2WTBKdlRHMXlMVTVNYTNoR2JFWkRlRFZzU25kYVJ6WnlSbFZ2VUhCUlN6Sk5RVGg0UVdkS2FFWW1aajB3TVZWTFRrSXpVVUpHVkV4UVVVbEJWek5FVGtReVdqWlNOMU5GVFVsSFJrZFJKbU05Sm1ac2RXbGtQVEUlM0QiLCJyIjpmYWxzZX0sInAiOnsidSI6Imh0dHBzOi8vYnNpb25saW5lLnNoYXJlcG9pbnQuY29tL2NvbnRlbnRzdG9yYWdlL0NTUF9jYTAxZmRmNS01NTkzLTQ2NTItYmI2Yy0yYWQ2NTM0N2UyNTg%2FbmF2PWN6MGxNa1pqYjI1MFpXNTBjM1J2Y21GblpTVXlSa05UVUY5allUQXhabVJtTlMwMU5Ua3pMVFEyTlRJdFltSTJZeTB5WVdRMk5UTTBOMlV5TlRnbVpEMWlJVGxtTUVKNWNFNVdWV3RoTjJKRGNsZFZNR1pwVjAxNlkwSnZURzF5TFU1TWEzaEdiRVpEZURWc1NuZGFSelp5UmxWdlVIQlJTekpOUVRoNFFXZEthRVltWmowd01WVkxUa0l6VVVST1dUWkNSMEZXVGtzM05VTXpXa0ZDVlRNM1dWbFFTVlJKSm1NOUptWnNkV2xrUFRFJTNEIiwiciI6ZmFsc2V9LCJpIjp7ImkiOiIwZGIyYjE4ZC0wY2FkLTRmOTAtYjM0Zi1hNzU2NzVlYWE1YjIifX0%3D"},
+      {text:"Weekly Tips Flow",url:"https://loop.cloud.microsoft/p/eyJ3Ijp7InUiOiJodHRwczovL2JzaW9ubGluZS5zaGFyZXBvaW50LmNvbS8%2FbmF2PWN6MGxNa1ltWkQxaUlUbG1NRUo1Y0U1V1ZXdGhOMkpEY2xkVk1HWnBWMDE2WTBKdlRHMXlMVTVNYTNoR2JFWkRlRFZzU25kYVJ6WnlSbFZ2VUhCUlN6Sk5RVGg0UVdkS2FFWW1aajB3TVZWTFRrSXpVVUpHVkV4UVVVbEJWek5FVGtReVdqWlNOMU5GVFVsSFJrZFJKbU05Sm1ac2RXbGtQVEUlM0QiLCJyIjpmYWxzZX0sInAiOnsidSI6Imh0dHBzOi8vYnNpb25saW5lLnNoYXJlcG9pbnQuY29tL2NvbnRlbnRzdG9yYWdlL0NTUF9jYTAxZmRmNS01NTkzLTQ2NTItYmI2Yy0yYWQ2NTM0N2UyNTg%2FbmF2PWN6MGxNa1pqYjI1MFpXNTBjM1J2Y21GblpTVXlSa05UVUY5allUQXhabVJtTlMwMU5Ua3pMVFEyTlRJdFltSTJZeTB5WVdRMk5UTTBOMlV5TlRnbVpEMWlJVGxtTUVKNWNFNVdWV3RoTjJKRGNsZFZNR1pwVjAxNlkwSnZURzF5TFU1TWEzaEdiRVpEZURWc1NuZGFSelp5UmxWdlVIQlJTekpOUVRoNFFXZEthRVltWmowd01WVkxUa0l6VVVNMVFrbFVVVlF5VjBOU1drWkxUVlJEVVZCSFUwOUVVMFZUSm1NOUptWnNkV2xrUFRFJTNEIiwiciI6ZmFsc2V9LCJpIjp7ImkiOiIwYzdmNjliOS04MjJjLTQ2ZmYtOGQxMC0yN2M1ZjMwNzRlZTMifX0%3D"}
+    ]},
+    {t:"Publish the flow"},
+    {t:"Add the flow to LX QA & Testing Pack only"}
+  ]},
+  {label:"LEMN",items:[
+    {t:"Review and update the Flow record in LEMN to reflect the finalized state"}
+  ]},
+  {label:"End-user experience review",items:[
+    {t:"Experience the Flow end-to-end as a user"},
+    {t:"If email-based: temporarily shorten email delays"},
+    {t:"If email-based: auto-start the Flow for yourself"},
+    {t:"Test all branches using Flow reset"},
+    {t:"Restore any temporary settings (email delays, etc.)"}
+  ]},
+  {label:"Before handing off",warn:true,items:[
+    {t:"If any issues are found, communicate them with the designer and confirm all issues are resolved before proceeding"},
+    {t:"Flow has NOT been added to any customer-facing Packs"},
+    {t:"All temporary settings have been restored"},
+    {t:"Notify the owner of the Flow QA card that the finalization is complete"}
+  ]}
+]},
+{label:"Flow QA",short:"QA",sections:[
+  {label:"Before you start",alert:"You are the last line of defense! Do not move this forward unless the Flow is 100% ready for the spotlight.",items:[
+    {t:"Confirmed: you are not the primary designer of this Flow"},
+    {t:"Use the Flow rubrics when possible",link:{text:"Flow rubrics",url:"https://bsionline.sharepoint.com/sites/LXteam/Shared%20Documents/Forms/AllItems.aspx?csf=1&web=1&e=UcjXbe&CID=77e1e46f%2D5537%2D4307%2D941e%2D42dba00ae928&FolderCTID=0x0120009AA68B0B0A798A48B22AD2E4E9163D0D&id=%2Fsites%2FLXteam%2FShared%20Documents%2FDesign%20center%2FDesign%20Work%2FRubrics"}}
+  ]},
+  {label:"Admin portal review",items:[
+    {t:"Validate all metadata for accuracy and adherence to current practices"},
+    {t:"Confirm Flow structure matches its intended Flow type"},
+    {t:"Check objectives and measurement clarity"},
+    {t:"Verify branches, pacing, logic, and continuity"},
+    {t:"Ensure every asset is in the correct Pack"}
+  ]},
+  {label:"End-user review",items:[
+    {t:"Experience the Flow end-to-end as a user"},
+    {t:"If email-based: temporarily shorten email delays"},
+    {t:"If email-based: auto-start the Flow for yourself"},
+    {t:"Test all branches using Flow reset"},
+    {t:"Complete the Flow review checklist",link:{text:"Flow review checklist",url:"https://loop.cloud.microsoft/p/eyJ3Ijp7InUiOiJodHRwczovL2JzaW9ubGluZS5zaGFyZXBvaW50LmNvbS8%2FbmF2PWN6MGxNa1ltWkQxaUlWcElSMDlTV1RsTFVHc3RXbEJ5WlRoME1URTRVRWhDWDI1aWMwOWFSV3hMYkd4RFZuQjZTMHR4YmpSdFdFSTRRbFkxUnpCU1dsUnNlRzlDV1hCcmRFa21aajB3TVZRNE5FRllTMUEwUlRKVlVWaERSRWcxUmtoWlZFSkJXVnBEVUU1S1FqZEJKbU05Sm1ac2RXbGtQVEUlM0QiLCJyIjpmYWxzZX0sInAiOnsidSI6Imh0dHBzOi8vYnNpb25saW5lLnNoYXJlcG9pbnQuY29tL2NvbnRlbnRzdG9yYWdlL0NTUF80NThlNzE2NC00YThmLTRmM2UtOTkzZS1iN2JjYjc1ZDdjM2M%2FbmF2PWN6MGxNa1pqYjI1MFpXNTBjM1J2Y21GblpTVXlSa05UVUY4ME5UaGxOekUyTkMwMFlUaG1MVFJtTTJVdE9Ua3paUzFpTjJKallqYzFaRGRqTTJNbVpEMWlJVnBJUjA5U1dUbExVR3N0V2xCeVpUaDBNVEU0VUVoQ1gyNWljMDlhUld4TGJHeERWbkI2UzB0eGJqUnRXRUk0UWxZMVJ6QlNXbFJzZUc5Q1dYQnJkRWttWmowd01WRlFORUZZUzA5TVMxWlJVMU5TVFZaTVVrUmFObHBRV2swMFRsWXlXRUZKSm1NOUptWnNkV2xrUFRFJTNEIiwiciI6ZmFsc2V9LCJpIjp7ImkiOiIxNTg3NmIzNy03NjAyLTRiNWMtOTMxNy1hNDVjYThhZjkwZmYifX0%3D"}},
+    {t:"Restore any temporary settings (email delays, etc.)"}
+  ]},
+  {label:"Before sign-off",warn:true,items:[
+    {t:"If any issues are found, communicate them with the designer and confirm all issues are resolved before proceeding"},
+    {t:"Flow has NOT been added to any live or customer-facing Pack"},
+    {t:"All temporary changes made during QA have been restored"},
+    {t:"Notify the owner of the Complete & Launch card that the Flow is cleared and ready"}
+  ]}
+]}
+];
+
+var state=PHASES.map(function(p){return p.sections.map(function(s){return s.items?s.items.map(function(){return false;}):[];});});
+var active=0;
+
+function makePillLinks(item){
+  var html='';
+  if(item.link){
+    html+=' <a href="'+item.link.url+'" target="_blank" onclick="event.stopPropagation()" class="pill-link">'+item.link.text+' &#8599;</a>';
+  } else if(item.links){
+    for(var i=0;i<item.links.length;i++){
+      html+=' <a href="'+item.links[i].url+'" target="_blank" onclick="event.stopPropagation()" class="pill-link">'+item.links[i].text+' &#8599;</a>';
+    }
+  }
+  return html;
+}
+
+function renderPicker(){
+  var html='';
+  for(var i=0;i<PHASES.length;i++){
+    var p=PHASES[i];
+    var total=0,done=0;
+    for(var si=0;si<p.sections.length;si++){if(p.sections[si].items){total+=p.sections[si].items.length;for(var ii=0;ii<p.sections[si].items.length;ii++){if(state[i][si][ii])done++;}}}
+    html+='<div class="phase-card p'+i+(active===i?' active':'')+'" onclick="setActive('+i+')"><div class="card-num">'+done+'/'+total+'</div><div class="card-label">'+p.short+'</div></div>';
+  }
+  document.getElementById('picker').innerHTML=html;
+}
+
+function renderChecklist(){
+  var pi=active,p=PHASES[pi];
+  var total=0,done=0;
+  for(var si=0;si<p.sections.length;si++){if(p.sections[si].items){total+=p.sections[si].items.length;for(var ii=0;ii<p.sections[si].items.length;ii++){if(state[pi][si][ii])done++;}}}
+  var pct=total?Math.round(done/total*100):0;
+  var html='<div class="checklist"><div class="checklist-header p'+pi+'"><span class="header-title">Phase '+(pi+1)+' — '+p.label+'</span><span class="header-pct">'+done+'/'+total+'</span><button class="reset-btn" onclick="resetPhase('+pi+')">Reset</button></div><div class="pbar-wrap p'+pi+'"><div class="pbar" style="width:'+pct+'%"></div></div>';
+  for(var si=0;si<p.sections.length;si++){
+    var sec=p.sections[si];
+    html+='<div class="section-label">'+sec.label+'</div>';
+    if(sec.alert){html+='<div class="alert-row"><span class="alert-text">&#9888;&nbsp;'+sec.alert+'</span></div>';}
+    if(sec.info){
+      var lines=sec.info.split('\n\n');
+      html+='<div class="info-row"><span class="info-text">';
+      for(var li=0;li<lines.length;li++){html+='<p style="margin-bottom:'+(li<lines.length-1?'6px':'0')+'">'+lines[li]+'</p>';}
+      html+='</span></div>';
+    }
+    if(sec.note){html+='<div class="info-row"><span class="info-text">'+sec.note+'</span></div>';}
+    if(sec.items){
+      for(var ii=0;ii<sec.items.length;ii++){
+        var item=sec.items[ii];
+        var d=state[pi][si][ii];
+        html+='<div class="check-row'+(d?' done':'')+'" onclick="toggle('+pi+','+si+','+ii+')">';
+        html+='<div class="check-box p'+pi+(d?' ticked':'')+'">'+( d?'&#10003;':''  )+'</div>';
+        html+='<div class="check-label">'+item.t+makePillLinks(item)+'</div>';
+        html+='</div>';
+      }
+    }
+    if(sec.warn){html+='<div class="warn-row"><span class="warn-text">&#9888;&nbsp; Confirm all items above before you mark this card done and hand off to the next phase.</span></div>';}
+  }
+  html+='<div class="complete-banner" style="'+(done===total?'display:block':'display:none')+'">Phase '+(pi+1)+' complete — ready to hand off &#10003;</div></div>';
+  document.getElementById('checklist-view').innerHTML=html;
+}
+
+function setActive(i){active=i;renderPicker();renderChecklist();}
+function toggle(pi,si,ii){state[pi][si][ii]=!state[pi][si][ii];renderPicker();renderChecklist();}
+function resetPhase(pi){state[pi]=PHASES[pi].sections.map(function(s){return s.items?s.items.map(function(){return false;}):[];});renderPicker();renderChecklist();}
+
+renderPicker();
+renderChecklist();
+</script>
+</body>
+</html>
